@@ -6,6 +6,7 @@
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="styles/tables.css">
 <!-- Latest compiled and minified JavaScript -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -34,9 +35,8 @@
 		<div class="collapse navbar-collapse navHeaderCollapse">
 
 			<ul class="nav navbar-nav navbar-right">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#">Library</a></li>
-				<li><a href="about_us.xml">About Us</a></li>
+				<li><a href="index.jsp">Home</a></li>
+				<li class="active"><a href="library.jsp">Library</a></li>
 
 				<!-- include 'search' within navbar -->
 				<li><form class="navbar-form navbar-left" role="search" action="loading_splash.jsp">
@@ -65,14 +65,13 @@
 	</div>
 </div>
 
-<div class="container">
+<div class="container" id="content_body">
 
 	<div class="panel panel-default">
 		
 		<!-- default panel contents -->
-		<div class="panel-heading">Music Library</div>
+		<div class="panel-heading"><h4>Music Library</h4></div>
 		<div class="panel-body">
-			<p>Your paragraph text goes here.</p>
 		
 			<!-- creating the table -->
 			<table class="table table-hover">
@@ -111,7 +110,6 @@
 					while (song_rst.next()) {
 						query = "SELECT aname,artistid FROM album WHERE albumid IN ('"+song_rst.getString("albumid")+"');";
 						album_rst = album_stm.executeQuery(query);
-						out.println(query);
 						album_rst.next();
 
 						query = "SELECT fname,lname FROM artist WHERE artistid IN ('"+album_rst.getString("artistid")+"');";
@@ -128,19 +126,19 @@
 					<!-- model for a standard 'track' cell -->
 					<td>
 						<!-- clicking will show respective album info -->
-						<a href="clickable_table.jsp?search_criteria=Song&search_value=<%=track%>"><%=track%></a>
+						<a href="album_table.jsp?search_value=<%=album%>"><%=track%></a>
 					</td>
 
 					<!-- model for a standard 'artist' cell -->
 					<td>
 						<!-- clicking will show all artist's albums -->
-						<a href="clickable_table.jsp?search_criteria=Artist&search_value=<%=artist%>"><%=artist%></a>
+						<a href="artist_table.jsp?search_value=<%=artist%>"><%=artist%></a>
 					</td>
 
 					<!-- model for a standard 'album' cell -->
 					<td>
 						<!-- clicking will show all artist's albums -->
-						<a href="clickable_table.jsp?search_criteria=Album&search_value=<%=album%>"><%=album%></a>
+						<a href="album_table.jsp?search_value=<%=album%>"><%=album%></a>
 					</td>
 
 				</tr>
@@ -161,32 +159,15 @@
 								
 			</table>
 		</div>
+	</div>
+</div>
 
-		<!-- now try to implement a clickable modal -->
-		<div id="album_modal" class="modal fade" role="dialog" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-
-					<!-- modal header with title and 'close' icon -->
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title">ALBUM TITLE</h4>
-					</div>
-
-					<!-- modal body -->
-					<div class="modal-body">
-
-					</div>
-
-					<!-- modal footer -->
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-
-				</div>
-			</div>
-		</div>
-
+<div class="navbar navbar-default navbar-fixed-bottom">
+	<div class="container">
+		<p class="navbar-text pull-left">Site built by Esteban Porres</p>
+		<a href="mailto:emp0013@auburn.edu" class="navbar-btn btn-danger btn pull-right">
+            Email Us
+        </a>
 	</div>
 </div>
 

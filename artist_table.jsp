@@ -6,6 +6,7 @@
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="styles/tables.css">
 <!-- Latest compiled and minified JavaScript -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -34,9 +35,8 @@
 		<div class="collapse navbar-collapse navHeaderCollapse">
 
 			<ul class="nav navbar-nav navbar-right">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#">Library</a></li>
-				<li><a href="about_us.xml">About Us</a></li>
+				<li><a href="index.jsp">Home</a></li>
+				<li><a href="library.jsp">Library</a></li>
 
 				<!-- include 'search' within navbar -->
 				<li><form class="navbar-form navbar-left" role="search" action="loading_splash.jsp">
@@ -65,12 +65,12 @@
 	</div>
 </div>
 
-<div class="container">
+<div class="container" id="content_body">
 
 	<div class="panel panel-default">
 		
 		<!-- default panel contents -->
-		<div class="panel-heading">Music Library</div>
+		<div class="panel-heading"><h4>Search Results</h4></div>
 		<div class="panel-body">
 		
 			<!-- creating the table -->
@@ -78,9 +78,11 @@
 
 				<!-- contains all of the table headers -->
 				<tr>
-					<th>TRACK</th>
-					<th>ARTIST</th>
 					<th>ALBUM</th>
+					<th>ARTIST</th>
+					<th>GENRE</th>
+					<th>YEAR</th>
+					<th>PRICE</th>
 				</tr>
 
 				<%
@@ -97,7 +99,7 @@
 					
 					Statement song_stm, album_stm, artist_stm;
 					ResultSet song_rst, album_rst, artist_rst;
-					String track, album, artist, query;
+					String album, artist, year, price, query;
 
 					String value = request.getParameter("search_value");
 					String first = value.substring(0,value.indexOf(" "));
@@ -113,7 +115,7 @@
 					// iterate albums for given artist
 					while (artist_rst.next()) {
 						
-						query = "SELECT aname,albumid FROM album WHERE artistid IN ('"+artist_rst.getString("artistid")+"');";
+						query = "SELECT aname,albumid,genre,year,price FROM album WHERE artistid IN ('"+artist_rst.getString("artistid")+"');";
 						album_rst = album_stm.executeQuery(query);
 						
 						artist = artist_rst.getString("fname") + " " + artist_rst.getString("lname");
@@ -121,40 +123,30 @@
 						while (album_rst.next()) {
 
 							album = album_rst.getString("aname");
-							query = "SELECT sname FROM song WHERE albumid IN ('"+album_rst.getString("albumid")+"');";
-							song_rst = song_stm.executeQuery(query);
-
-							while (song_rst.next()) {
-
-								track = song_rst.getString("sname");
 				%>
 
 				<!-- model for a standard table row -->
 				<tr>
-					<!-- model for a standard 'track' cell -->
+					<!-- model for a standard 'album' cell -->
 					<td>
-						<!-- clicking will show respective album info -->
-						<a href="clickable_table.jsp?search_criteria=Song&search_value=<%=track%>"><%=track%></a>
+						<!-- clicking will show all artist's albums -->
+						<a href="album_table.jsp?search_value=<%=album%>"><%=album%></a>
 					</td>
 
 					<!-- model for a standard 'artist' cell -->
 					<td>
 						<!-- clicking will show all artist's albums -->
-						<a href="clickable_table.jsp?search_criteria=Artist&search_value=<%=artist%>"><%=artist%></a>
+						<a href="artist_table.jsp?search_value=<%=artist%>"><%=artist%></a>
 					</td>
 
-					<!-- model for a standard 'album' cell -->
-					<td>
-						<!-- clicking will show all artist's albums -->
-						<a href="clickable_table.jsp?search_criteria=Album&search_value=<%=album%>"><%=album%></a>
-					</td>
+					<!-- genre, year, price columns -->
+					<td><%=album_rst.getString("genre")%></td>
+					<td><%=album_rst.getString("year")%></td>
+					<td>$<%=album_rst.getString("price")%></td>
 
 				</tr>
 
 				<%		
-							}
-
-							song_rst.close();
 						}
 
 						album_rst.close();
@@ -199,6 +191,15 @@
 			</div>
 		</div>
 
+	</div>
+</div>
+
+<div class="navbar navbar-default navbar-fixed-bottom">
+	<div class="container">
+		<p class="navbar-text pull-left">Site built by Esteban Porres</p>
+		<a href="mailto:emp0013@auburn.edu" class="navbar-btn btn-danger btn pull-right">
+            Email Us
+        </a>
 	</div>
 </div>
 

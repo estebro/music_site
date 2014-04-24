@@ -1,0 +1,19 @@
+body {
+    background-color: #3B3835;
+}
+
+#content_body {
+	margin-bottom: 50px;
+}
+
+.navbar {
+	background-color: #212424;
+	border-color: #212424;
+}
+
+.navbar-fixed-bottom {
+    background-color: #212424;
+    border-color: #212424;
+    color: #FFFFFF;
+    font-weight: lighter;
+}
